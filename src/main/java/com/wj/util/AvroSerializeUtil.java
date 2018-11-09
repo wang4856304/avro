@@ -9,41 +9,22 @@ import org.apache.avro.io.DatumReader;
 import org.apache.avro.io.DatumWriter;
 import org.apache.avro.specific.SpecificDatumReader;
 import org.apache.avro.specific.SpecificDatumWriter;
-import org.apache.avro.specific.SpecificRecordBase;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AvroSerializeUtil {
-
-    private static AvroSerializeUtil avroSerializeUtil;
-
-    private AvroSerializeUtil() {
-
-    }
-
-    /**
-     * 单例
-     * @return
-     */
-    public static AvroSerializeUtil getInstance() {
-        synchronized (AvroSerializeUtil.class) {
-            if (avroSerializeUtil == null) {
-                avroSerializeUtil = new AvroSerializeUtil();
-            }
-            return avroSerializeUtil;
-        }
-    }
-
     /**
      * 序列化到文件
      * @param clazz
      * @param data
      * @param path
      */
-    public void serialize(Class<?> clazz, Object data, Schema schema,  String path) {
+    public static void serialize(Class<?> clazz, Object data, Schema schema,  String path) {
+        if (data == null) {
+            return;
+        }
         DatumWriter datumWriter = new SpecificDatumWriter(clazz);
         DataFileWriter dataFileWriter = new DataFileWriter(datumWriter);
         try {
@@ -69,7 +50,10 @@ public class AvroSerializeUtil {
      * @param dataList
      * @param path
      */
-    public void serializeList(Class<?> clazz, List dataList, Schema schema, String path) {
+    public static void serializeList(Class<?> clazz, List dataList, Schema schema, String path) {
+        if (dataList == null) {
+            return;
+        }
         DatumWriter datumWriter = new SpecificDatumWriter(clazz);
         DataFileWriter dataFileWriter = new DataFileWriter(datumWriter);
         try {
@@ -99,7 +83,10 @@ public class AvroSerializeUtil {
      * @param data
      * @return
      */
-    public byte[] serialize(Class<?> clazz, Object data, Schema schema) {
+    public static byte[] serialize(Class<?> clazz, Object data, Schema schema) {
+        if (data == null) {
+            return null;
+        }
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DatumWriter datumWriter = new SpecificDatumWriter(clazz);
         DataFileWriter dataFileWriter = new DataFileWriter(datumWriter);
@@ -129,7 +116,10 @@ public class AvroSerializeUtil {
      * @param dataList
      * @return
      */
-    public byte[] serializeList(Class<?> clazz, List dataList, Schema schema) {
+    public static byte[] serializeList(Class<?> clazz, List dataList, Schema schema) {
+        if (dataList == null) {
+            return null;
+        }
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DatumWriter datumWriter = new SpecificDatumWriter(clazz);
         DataFileWriter dataFileWriter = new DataFileWriter(datumWriter);
@@ -163,7 +153,7 @@ public class AvroSerializeUtil {
      * @param path
      * @return
      */
-    public Object deserialize(Class<?> clazz, String path) {
+    public static <T> T deserialize(Class<?> clazz, String path) {
         File file = new File(path);
         DatumReader datumReader = new SpecificDatumReader(clazz);
         DataFileReader dataFileReader = null;
@@ -171,7 +161,7 @@ public class AvroSerializeUtil {
             dataFileReader = new DataFileReader(file, datumReader);
             if (dataFileReader.hasNext()) {
                 Object object = dataFileReader.next();
-                return object;
+                return (T)object;
             }
         }
         catch (Exception ex) {
@@ -196,7 +186,7 @@ public class AvroSerializeUtil {
      * @param path
      * @return
      */
-    public List deserializeList(Class<?> clazz, String path) {
+    public static  <T> T  deserializeList(Class<?> clazz, String path) {
         List objectList = new ArrayList<>();
         File file = new File(path);
         DatumReader datumReader = new SpecificDatumReader(clazz);
@@ -207,7 +197,7 @@ public class AvroSerializeUtil {
                 Object object = dataFileReader.next();
                 objectList.add(object);
             }
-            return objectList;
+            return (T)objectList;
         }
         catch (Exception ex) {
             ex.printStackTrace();
@@ -231,7 +221,7 @@ public class AvroSerializeUtil {
      * @param byteArray
      * @return
      */
-    public Object deserialize(Class<?> clazz, byte[] byteArray) {
+    public static  <T> T deserialize(Class<?> clazz, byte[] byteArray) {
         SeekableByteArrayInput sbai = new SeekableByteArrayInput(byteArray);
         DatumReader datumReader = new SpecificDatumReader(clazz);
         DataFileReader dataFileReader = null;
@@ -239,7 +229,7 @@ public class AvroSerializeUtil {
             dataFileReader = new DataFileReader(sbai, datumReader);
             if (dataFileReader.hasNext()) {
                 Object object = dataFileReader.next();
-                return object;
+                return (T)object;
             }
         }
         catch (Exception ex) {
@@ -264,7 +254,7 @@ public class AvroSerializeUtil {
      * @param byteArray
      * @return
      */
-    public List deserializeList(Class<?> clazz, byte[] byteArray) {
+    public static  <T> T deserializeList(Class<?> clazz, byte[] byteArray) {
         List objectList = new ArrayList<>();
         SeekableByteArrayInput sbai = new SeekableByteArrayInput(byteArray);
         DatumReader datumReader = new SpecificDatumReader(clazz);
@@ -275,7 +265,7 @@ public class AvroSerializeUtil {
                 Object object = dataFileReader.next();
                 objectList.add(object);
             }
-            return objectList;
+            return (T)objectList;
         }
         catch (Exception ex) {
             ex.printStackTrace();
@@ -295,7 +285,6 @@ public class AvroSerializeUtil {
 
 
     public static void main(String args[]) {
-        AvroSerializeUtil avroSerializeUtil = AvroSerializeUtil.getInstance();
         User user = new User();
         user.setName("wangjun");
         user.setFavoriteNumber(11);
@@ -311,14 +300,14 @@ public class AvroSerializeUtil {
         userList.add(userX);
         Schema schema = user.getSchema();
         //avroSerializeUtil.serialize(User.class, user, "e:\\user.avro");
-        byte[] dataX = avroSerializeUtil.serialize(User.class, user, schema);
-        User user1 = (User)avroSerializeUtil.deserialize(User.class, dataX);
+        byte[] dataX = AvroSerializeUtil.serialize(User.class, user, schema);
+        User user1 = AvroSerializeUtil.deserialize(User.class, dataX);
         System.out.println(user1);
 
-        byte[] data = avroSerializeUtil.serializeList(User.class, userList, schema);
+        byte[] data = AvroSerializeUtil.serializeList(User.class, userList, schema);
 
         //User user1 = (User) avroSerializeUtil.deserialize(User.class, "e:\\user.avro");
-        List<User> userList1 = (List<User>)avroSerializeUtil.deserializeList(User.class, data);
+        List<User> userList1 = AvroSerializeUtil.deserializeList(User.class, data);
         System.out.println(userList1);
     }
 }

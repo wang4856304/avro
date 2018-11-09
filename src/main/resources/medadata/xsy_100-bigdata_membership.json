@@ -1,0 +1,35 @@
+{
+  "name":"membership",
+  "version":"1.0.0",
+  "member_attributes":
+  [
+	  {
+	    "name": "member_id",
+	    "displayName": "Member Id",
+	    "description": "Member UUID",    
+	    "data_type":"String",
+	    "default":"1",
+	    "read_only":"true",
+	    "nullable":"false",
+	    "derived":"false",
+	    "expression":"1",
+	    "source":"system assigned",
+	    "source_column":"1",
+	    "api_logic":"ALWAYS_RETURN"
+	  },
+	  {
+	    "name": "tenant_id",
+	    "displayName": "Tenant Id",
+	    "description": "租户ID",    
+	    "data_type":"Long",
+	    "default":"",
+	    "read_only":"true",
+	    "nullable":"false",
+	    "derived":"false",
+	    "expression":"",
+	    "source":"assigned",
+	    "source_column":"tenant_id",
+	    "api_logic":"ALWAYS_RETURN"
+	  }
+   ]
+}

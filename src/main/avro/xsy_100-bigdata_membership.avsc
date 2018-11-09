@@ -1,0 +1,20 @@
+{
+  "namespace": "com.wj.entity",
+  "type": "record",
+  "name": "MemberShip",
+  "fields":
+  [
+      {"name": "name", "type": "string", "default": "member_id"},
+      {"name": "displayName",  "type": "string"},
+      {"name": "description", "type": "string"},
+      {"name": "data_type", "type": "string"},
+      {"name": "default", "type": "string"},
+      {"name": "read_only", "type": "boolean"},
+      {"name": "nullable", "type": "boolean"},
+      {"name": "derived", "type": "boolean"},
+      {"name": "expression", "type": "string"},
+      {"name": "source", "type": "string"},
+      {"name": "source_column", "type": "string"},
+      {"name": "api_logic", "type": "string"}
+   ]
+}
