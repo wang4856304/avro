@@ -32,7 +32,7 @@ public class AvroSerializeUtil {
             dataFileWriter.append(data);
         }
         catch (Exception ex) {
-            ex.printStackTrace();
+            throw new RuntimeException("序列化发生错误!");
         }
         finally {
             try {
@@ -65,7 +65,7 @@ public class AvroSerializeUtil {
             }
         }
         catch (Exception ex) {
-            ex.printStackTrace();
+            throw new RuntimeException("序列化发生错误!");
         }
         finally {
             try {
@@ -97,7 +97,7 @@ public class AvroSerializeUtil {
             return baos.toByteArray();
         }
         catch (Exception ex) {
-            ex.printStackTrace();
+            throw new RuntimeException("序列化发生错误!");
         }
         finally {
             try {
@@ -107,7 +107,6 @@ public class AvroSerializeUtil {
                 ex.printStackTrace();
             }
         }
-        return null;
     }
 
     /**
@@ -134,7 +133,7 @@ public class AvroSerializeUtil {
             return baos.toByteArray();
         }
         catch (Exception ex) {
-            ex.printStackTrace();
+            throw new RuntimeException("序列化发生错误!");
         }
         finally {
             try {
@@ -144,7 +143,6 @@ public class AvroSerializeUtil {
                 ex.printStackTrace();
             }
         }
-        return null;
     }
 
     /**
@@ -165,7 +163,7 @@ public class AvroSerializeUtil {
             }
         }
         catch (Exception ex) {
-            ex.printStackTrace();
+            throw new RuntimeException("反序列化发生错误!");
         }
         finally {
             try {
@@ -200,7 +198,7 @@ public class AvroSerializeUtil {
             return (T)objectList;
         }
         catch (Exception ex) {
-            ex.printStackTrace();
+            throw new RuntimeException("反序列化发生错误!");
         }
         finally {
             try {
@@ -212,7 +210,6 @@ public class AvroSerializeUtil {
                 ex.printStackTrace();
             }
         }
-        return null;
     }
 
     /**
@@ -233,7 +230,7 @@ public class AvroSerializeUtil {
             }
         }
         catch (Exception ex) {
-            ex.printStackTrace();
+            throw new RuntimeException("反序列化发生错误!");
         }
         finally {
             try {
@@ -268,7 +265,7 @@ public class AvroSerializeUtil {
             return (T)objectList;
         }
         catch (Exception ex) {
-            ex.printStackTrace();
+            throw new RuntimeException("反序列化发生错误!");
         }
         finally {
             try {
@@ -280,7 +277,6 @@ public class AvroSerializeUtil {
                 ex.printStackTrace();
             }
         }
-        return null;
     }
 
 
